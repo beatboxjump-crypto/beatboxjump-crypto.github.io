@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>うえおか歯科医院</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Maru+Gothic:wght@500;700&display=swap">
+<style>
+/* Layout: 医院のチラシと同じオレンジ(見出し・ボタン)とグリーン(区切り線)で構成する1カラムの縦スクロール。診療時間と電話番号を最初の画面に置く。 */
+:root{
+  --bg:#faf8f4;
+  --surface:#ffffff;
+  --ink:#2b2118;
+  --muted:#65574a;
+  --line:#e6dccf;
+  --accent:#b85a0c;
+  --accent-ink:#ffffff;
+  --accent-soft:#fbe8d3;
+  --green:#2e7d4f;
+  --note-bg:#fff2c9;
+  --note-ink:#5a4200;
+  --ok:#2e7d4f;
+  --soon:#b85a0c;
+  --off:#9a3f3f;
+  --font-display:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic",sans-serif;
+  --font-body:"Noto Sans JP","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17110b;
+    --surface:#211912;
+    --ink:#f4eadf;
+    --muted:#b9a894;
+    --line:#3a2e22;
+    --accent:#f0a455;
+    --accent-ink:#2a1500;
+    --accent-soft:#3a2915;
+    --green:#6fcf94;
+    --note-bg:#3a2f12;
+    --note-ink:#f0dca4;
+    --ok:#6fcf94;
+    --soon:#f0a455;
+    --off:#e49a9a;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17110b;
+  --surface:#211912;
+  --ink:#f4eadf;
+  --muted:#b9a894;
+  --line:#3a2e22;
+  --accent:#f0a455;
+  --accent-ink:#2a1500;
+  --accent-soft:#3a2915;
+  --green:#6fcf94;
+  --note-bg:#3a2f12;
+  --note-ink:#f0dca4;
+  --ok:#6fcf94;
+  --soon:#f0a455;
+  --off:#e49a9a;
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.9;
+  -webkit-text-size-adjust:100%;
+}
+h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.5;margin:0;text-wrap:balance}
+p{margin:0}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+.wrap{
+  max-width:1040px;
+  margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+
+/* 確認中・差し替え待ちの内容 */
+.ph{background:var(--note-bg);color:var(--note-ink);padding:0 .3em;border-radius:3px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+
+.notice{background:var(--note-bg);color:var(--note-ink);font-size:.8125rem;line-height:1.7;padding-block:.6rem}
+
+/* ヘッダー */
+.site-head{background:var(--surface);border-bottom:4px solid var(--accent)}
+.site-head .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem 1.5rem;padding-block:1rem}
+.brand{display:flex;flex-direction:column;text-decoration:none;color:var(--ink);min-width:0}
+.brand-en{font-size:.6875rem;letter-spacing:.22em;color:var(--accent);font-weight:700;line-height:1.5}
+.brand-name{font-family:var(--font-display);font-weight:700;font-size:1.55rem;line-height:1.35}
+.nav{display:flex;flex-wrap:wrap;gap:.25rem 1.1rem;font-size:.9375rem}
+.nav a{color:var(--ink);text-decoration:none;padding:.25rem 0;border-bottom:2px solid transparent}
+.nav a:hover{border-bottom-color:var(--accent)}
+
+/* ヒーロー */
+.hero{padding-block:clamp(1.75rem,6vw,3.75rem)}
+.hero .wrap{display:grid;grid-template-columns:1fr;gap:2rem;align-items:center}
+@media (min-width:820px){.hero .wrap{grid-template-columns:1.15fr .85fr;gap:3rem}}
+.eyebrow{font-size:.8125rem;letter-spacing:.1em;color:var(--accent);font-weight:700;margin-bottom:.75rem}
+.hero h1{font-size:clamp(1.6rem,4.6vw,2.4rem)}
+.hero .lead{margin-top:1.1rem;color:var(--muted);max-width:34em}
+.actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.6rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;padding:.7em 1.3em;border-radius:8px;font:inherit;font-weight:700;font-size:.9375rem;text-decoration:none;border:1.5px solid var(--accent);cursor:pointer;line-height:1.5}
+.btn-primary{background:var(--accent);color:var(--accent-ink)}
+.btn-ghost{background:transparent;color:var(--accent)}
+.btn:hover{filter:brightness(1.06)}
+.btn .num{font-variant-numeric:tabular-nums;letter-spacing:.02em}
+
+.today-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.5rem 1.5rem 1.35rem;min-width:0}
+.card-label{font-size:.8125rem;letter-spacing:.1em;color:var(--muted);font-weight:700}
+.pill{display:inline-flex;align-items:center;gap:.5rem;margin-top:.6rem;font-family:var(--font-display);font-weight:700;font-size:1.45rem;line-height:1.4;color:var(--ink)}
+.pill::before{content:"";width:.7rem;height:.7rem;border-radius:50%;background:var(--muted);flex:none}
+.pill[data-state="open"]{color:var(--ok)}
+.pill[data-state="open"]::before{background:var(--ok)}
+.pill[data-state="soon"]{color:var(--soon)}
+.pill[data-state="soon"]::before{background:var(--soon)}
+.pill[data-state="off"]{color:var(--off)}
+.pill[data-state="off"]::before{background:var(--off)}
+.status-sub{margin-top:.3rem;font-size:.9375rem}
+.week-line{margin-top:1rem;padding-top:.9rem;border-top:1px solid var(--line);font-size:.875rem;color:var(--muted);line-height:1.8}
+.tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.9rem}
+.tag{font-size:.8125rem;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:.2em .8em;border-radius:999px;line-height:1.7}
+
+/* セクション共通 */
+.band{padding-block:clamp(2.5rem,7vw,4.5rem)}
+.band.alt{background:var(--surface);border-block:1px solid var(--line)}
+.band h2{font-size:clamp(1.35rem,3.4vw,1.75rem)}
+.band .section-lead{margin-top:.6rem;color:var(--muted);max-width:40em}
+
+/* 当院の考え方 */
+.about{display:grid;grid-template-columns:1fr;gap:2rem;margin-top:1.5rem;align-items:start}
+@media (min-width:820px){.about{grid-template-columns:1.2fr .8fr;gap:3rem}}
+.about-text{display:grid;gap:1rem;max-width:36em}
+.photos{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:1rem}
+.photo{width:100%;aspect-ratio:4/3;border:1.5px dashed var(--line);border-radius:10px;display:grid;place-items:center;text-align:center;font-size:.8125rem;color:var(--muted);padding:.75rem}
+
+/* 治療方針 */
+.motto{margin-top:1rem;font-family:var(--font-display);font-weight:700;font-size:clamp(1.1rem,2.8vw,1.4rem);line-height:1.6}
+.policy{list-style:none;margin:1.75rem 0 0;padding:0;counter-reset:policy;border-bottom:2px solid var(--green)}
+.policy li{counter-increment:policy;display:grid;grid-template-columns:3.2rem 1fr;gap:0 1.25rem;padding-block:1.4rem;border-top:2px solid var(--green)}
+@media (min-width:700px){.policy li{grid-template-columns:5rem 1fr;gap:0 2rem}}
+.policy li::before{content:counter(policy);grid-row:1 / span 2;font-family:var(--font-display);font-weight:700;font-size:clamp(2.8rem,8vw,4.5rem);line-height:1;color:var(--accent)}
+.policy h3{font-size:clamp(1.15rem,2.8vw,1.4rem)}
+.policy p{margin-top:.5rem;color:var(--muted);font-size:.9375rem;max-width:40em}
+.signature{margin-top:1.25rem;text-align:right;font-size:.9375rem}
+
+/* 診療案内 */
+.chips{display:flex;flex-wrap:wrap;gap:.75rem;margin:1.75rem 0 0;padding:0;list-style:none}
+.chips li{font-family:var(--font-display);font-weight:700;font-size:1rem;color:var(--accent);border:1.5px solid var(--accent);border-radius:999px;padding:.35em 1.1em;line-height:1.6}
+.chips-note{margin-top:1.1rem;font-size:.9375rem;color:var(--muted)}
+
+/* 診療時間 */
+.table-scroll{overflow-x:auto;margin-top:1.75rem}
+.hours{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;text-align:center}
+.hours th,.hours td{padding:.7rem .2rem;border-bottom:1px solid var(--line);font-weight:500}
+.hours thead th{font-size:.9375rem;color:var(--muted);font-weight:700}
+.hours tbody th{text-align:left;font-family:var(--font-display);font-weight:700;padding-right:.6rem;white-space:nowrap;font-size:.9375rem}
+.hours td{color:var(--accent);font-size:1.05rem}
+.hours td.off{color:var(--muted);opacity:.75}
+.hours .today{background:var(--accent-soft)}
+.hours td.ph{background:var(--note-bg);color:var(--note-ink);opacity:1}
+.hours-notes{margin-top:1.1rem;font-size:.9375rem;color:var(--muted)}
+.hours-notes strong{color:var(--ink)}
+
+.reserve{margin-top:2.25rem;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.5rem}
+.band.alt .reserve{background:var(--bg)}
+.reserve h3{font-size:1.15rem}
+.reserve ul{margin:.8rem 0 0;padding-left:1.2rem;display:grid;gap:.6rem;font-size:.9375rem;max-width:44em}
+.reserve li::marker{color:var(--accent)}
+
+/* アクセス */
+.access{display:grid;grid-template-columns:1fr;gap:1.75rem;margin-top:2rem}
+@media (min-width:760px){.access{grid-template-columns:1.1fr .9fr;gap:3rem}}
+.info{margin:0;display:grid;grid-template-columns:5.5rem 1fr;border-top:1px solid var(--line)}
+.info dt,.info dd{margin:0;padding:.85rem 0;border-bottom:1px solid var(--line);min-width:0}
+.info dt{font-weight:700;font-size:.9375rem}
+.info dd{font-size:.9375rem}
+.tel-row{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .9rem}
+.tel{font-family:var(--font-display);font-weight:700;font-size:1.4rem;font-variant-numeric:tabular-nums;text-decoration:none;color:var(--ink)}
+.btn-small{padding:.25em .9em;font-size:.8125rem}
+.map-box{background:var(--accent-soft);border-radius:14px;padding:1.5rem;display:flex;flex-direction:column;gap:.9rem;align-items:flex-start;min-width:0}
+.map-box p{font-size:.9375rem}
+
+/* フッター */
+.site-foot{border-top:1px solid var(--line);padding-block:1.75rem;font-size:.8125rem;color:var(--muted)}
+.site-foot .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem 1.5rem}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="notice">
+  <div class="wrap">これは仮のホームページです。<span class="ph">黄色の部分</span>は確認中、または写真などの差し替え待ちの内容です。</div>
+</div>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top" id="top">
+      <span class="brand-en">UEOKA DENTAL CLINIC</span>
+      <span class="brand-name">うえおか歯科医院</span>
+    </a>
+    <nav class="nav" aria-label="ページ内メニュー">
+      <a href="#about">当院の考え方</a>
+      <a href="#policy">治療方針</a>
+      <a href="#services">診療案内</a>
+      <a href="#hours">診療時間</a>
+      <a href="#access">アクセス</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">東大阪市 小若江 ・ 長瀬駅から徒歩5分</p>
+        <h1>痛くなる前に、悪くなる前に行く歯医者さん。</h1>
+        <p class="lead">出来れば一生、ご自分の歯で食事がしたい。そう願う方の歯の健康を、予防とていねいな治療で支えます。</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="tel:0667238341">お電話で予約 <span class="num">06-6723-8341</span></a>
+          <a class="btn btn-ghost" href="#access">アクセス・地図</a>
+        </div>
+      </div>
+
+      <div class="today-card">
+        <p class="card-label">本日の診療</p>
+        <p class="pill" id="status" data-state="info" aria-live="polite">診療時間は下の表をご確認ください</p>
+        <p class="status-sub" id="status-sub"></p>
+        <p class="week-line">休診日は水曜日・日曜日・祝祭日です。<br>診療時間は<a href="#hours">こちら</a>。</p>
+        <div class="tags">
+          <span class="tag">初診・急患随時</span>
+          <span class="tag">各種保険取扱い</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band alt" id="about">
+    <div class="wrap">
+      <h2>健康を守る、歯科のかかり方</h2>
+      <div class="about">
+        <div class="about-text">
+          <p>歯医者は「痛くなったら行く」場所でした。しかし、むし歯や歯周病のような慢性の病気は、悪くなるたびに治療を繰り返していては、健康にプラスになりません。</p>
+          <p>うえおか歯科医院は、「痛くなる前に、悪くなる前に行く」場所として親しまれるよう努めています。</p>
+          <p>「ヤダヤダ怖い」歯科から、むし歯や歯周病にならないための、気持ちのよい予防やケアを行う「ニコニコ明るく楽しい」歯科へ。愛される笑顔いっぱいの歯科医院を目指しています。</p>
+        </div>
+        <div class="photos">
+          <div class="photo">医院の外観写真<br>(差し替え予定)</div>
+          <div class="photo">院内の写真<br>(差し替え予定)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="policy">
+    <div class="wrap">
+      <h2>治療方針</h2>
+      <p class="motto">「患者様へ常に最善の治療をご提供する」</p>
+      <p class="section-lead">このモットーのもと、次の4つの方針で診療しています。</p>
+      <ol class="policy">
+        <li>
+          <h3>無痛治療</h3>
+          <p>まず表面麻酔を行います。薬を塗るだけなので痛みはありません。感覚が鈍くなってから麻酔をします。電動麻酔を使い、歯科業界で一番細い針を使用しているため、治療中に痛みを感じることはほとんどありません。</p>
+        </li>
+        <li>
+          <h3>歯をできるだけ残す治療</h3>
+          <p>MI(ミニマルインターベンション)の考え方で、削る部分を必要最低限にとどめ、健全な歯質をできる限り残します。フッ素を放出する接着材料を選ぶことで、より小さな範囲の治療が可能になり、歯質の再石灰化も期待できます。</p>
+        </li>
+        <li>
+          <h3>包括的治療</h3>
+          <p>痛みの原因は、その歯だけとは限りません。お口全体に原因があるからです。原因を取り除き、放置すると近い将来悪くなる歯もあわせて治療することで、お口全体の健康を得られます。悪くなってから1本ずつ治療するより、健康な歯が長持ちします。</p>
+        </li>
+        <li>
+          <h3>安心できる治療</h3>
+          <p>一人ひとりの患者様に、丁寧な治療を行います。お口の状態をわかりやすくお知らせし、ご希望をうかがいながら進めます。これから行う治療や、その日に行った治療について、わからない点は遠慮なくご質問ください。</p>
+        </li>
+      </ol>
+      <p class="signature">うえおか歯科医院　院長　上岡 徹雄</p>
+    </div>
+  </section>
+
+  <section class="band alt" id="services">
+    <div class="wrap">
+      <h2>診療案内</h2>
+      <ul class="chips">
+        <li>歯科</li>
+        <li>小児歯科</li>
+        <li>歯科口腔外科</li>
+        <li>インプラント</li>
+        <li>審美</li>
+        <li>予防</li>
+        <li>訪問治療</li>
+      </ul>
+      <p class="chips-note">各種保険を取り扱っています。診療内容について詳しくは、お電話でお問い合わせください。</p>
+    </div>
+  </section>
+
+  <section class="band" id="hours">
+    <div class="wrap">
+      <h2>診療時間・ご予約</h2>
+      <div class="table-scroll">
+        <table class="hours">
+          <thead>
+            <tr>
+              <th scope="col">診察時間</th>
+              <th scope="col" data-d="1">月</th>
+              <th scope="col" data-d="2">火</th>
+              <th scope="col" data-d="3">水</th>
+              <th scope="col" data-d="4">木</th>
+              <th scope="col" data-d="5">金</th>
+              <th scope="col" data-d="6">土</th>
+              <th scope="col" data-d="0">日・祝</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">9:00〜12:00</th>
+              <td data-d="1">○</td><td data-d="2">○</td><td data-d="3" class="off">×</td><td data-d="4">○</td><td data-d="5">○</td><td data-d="6">○</td><td data-d="0" class="off">×</td>
+            </tr>
+            <tr>
+              <th scope="row">16:00〜19:00</th>
+              <td data-d="1" class="off ph">×</td><td data-d="2">○</td><td data-d="3" class="off">×</td><td data-d="4">○</td><td data-d="5">○</td><td data-d="6" class="off">×</td><td data-d="0" class="off">×</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="hours-notes"><strong>休診日:水曜日・日曜日・祝祭日</strong><br><span class="ph">月曜の午後は、チラシに手書きの修正があるため確認中です。</span></p>
+
+      <div class="reserve">
+        <h3>ご予約について</h3>
+        <ul>
+          <li>当院は予約制です。患者様お一人につき30分〜45分、治療と予防の時間をしっかり確保して、丁寧な診療を心がけています。</li>
+          <li>予約のキャンセル、時間の変更、遅れる場合は、ご予定が分かり次第、早めにお電話でご連絡いただけると幸いです。</li>
+          <li>無断キャンセルや遅刻を繰り返された場合や、予約時間外に来られた場合は、しっかり診療時間を確保できないことがあります。急性症状があったり、診療の必要がある場合は除きます。ご了承をお願いいたします。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="band alt" id="access">
+    <div class="wrap">
+      <h2>アクセス</h2>
+      <div class="access">
+        <dl class="info">
+          <dt>住所</dt>
+          <dd>〒577-0818<br>東大阪市小若江4丁目11-26 メープルコート1階</dd>
+          <dt>最寄り駅</dt>
+          <dd>近鉄大阪線「長瀬」駅から、近畿大学方面に徒歩5分</dd>
+          <dt>電話</dt>
+          <dd>
+            <div class="tel-row">
+              <a class="tel" id="tel" href="tel:0667238341">06-6723-8341</a>
+              <button type="button" class="btn btn-ghost btn-small" id="copy-tel">番号をコピー</button>
+            </div>
+          </dd>
+        </dl>
+        <div class="map-box">
+          <p>Googleマップで、医院の場所と道順を確認できます。</p>
+          <!-- 公開前に、医院のGoogleマップ(ビジネスプロフィール)のURLへ差し替える -->
+          <a class="btn btn-primary" href="https://www.google.com/maps/search/?api=1&amp;query=うえおか歯科医院+東大阪市小若江4丁目11-26" target="_blank" rel="noopener">Googleマップで見る</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <span>うえおか歯科医院(UEOKA DENTAL CLINIC)</span>
+    <span>© 2026 うえおか歯科医院</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* 診療時間(分単位)。月曜の午後は確認中のため休診として扱う */
+  var AM=[540,720], PM=[960,1140];
+  var DAYS={1:{am:1,pm:0},2:{am:1,pm:1},3:{am:0,pm:0},4:{am:1,pm:1},5:{am:1,pm:1},6:{am:1,pm:0},0:{am:0,pm:0}};
+  var MAP={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6};
+
+  function fmt(m){return Math.floor(m/60)+':'+('0'+(m%60)).slice(-2);}
+
+  try{
+    var parts=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Tokyo',weekday:'short',hour:'numeric',minute:'numeric',hour12:false}).formatToParts(new Date());
+    var o={};
+    parts.forEach(function(p){o[p.type]=p.value;});
+    var d=MAP[o.weekday];
+    var m=(parseInt(o.hour,10)%24)*60+parseInt(o.minute,10);
+    if(d===undefined||isNaN(m)){return;}
+
+    document.querySelectorAll('[data-d="'+d+'"]').forEach(function(el){el.classList.add('today');});
+
+    var day=DAYS[d];
+    var sessions=[];
+    if(day.am){sessions.push(AM);}
+    if(day.pm){sessions.push(PM);}
+
+    var status=document.getElementById('status');
+    var sub=document.getElementById('status-sub');
+    var current=null,next=null;
+    sessions.forEach(function(s){
+      if(m>=s[0]&&m<s[1]){current=s;}
+      else if(m<s[0]&&!next){next=s;}
+    });
+
+    if(current){
+      status.textContent='ただいま診療中';
+      status.setAttribute('data-state','open');
+      sub.textContent='この時間帯の診療は '+fmt(current[1])+' までです。';
+    }else if(next){
+      status.textContent='本日の診療は '+fmt(next[0])+' から';
+      status.setAttribute('data-state','soon');
+      sub.textContent='診療時間は '+fmt(next[0])+'〜'+fmt(next[1])+' です。';
+    }else if(sessions.length){
+      status.textContent='本日の診療は終了しました';
+      status.setAttribute('data-state','off');
+      sub.textContent='次回の診療時間は下の表をご確認ください。';
+    }else{
+      status.textContent='本日は休診日です';
+      status.setAttribute('data-state','off');
+      sub.textContent='診療時間は下の表をご確認ください。';
+    }
+  }catch(e){}
+
+  /* 電話番号のコピー */
+  var btn=document.getElementById('copy-tel');
+  var tel=document.getElementById('tel');
+  function select(){
+    var r=document.createRange();
+    r.selectNodeContents(tel);
+    var s=window.getSelection();
+    s.removeAllRanges();
+    s.addRange(r);
+    btn.textContent='選択しました';
+  }
+  btn.addEventListener('click',function(){
+    var txt=tel.textContent.trim();
+    try{
+      navigator.clipboard.writeText(txt).then(function(){
+        btn.textContent='コピーしました';
+        setTimeout(function(){btn.textContent='番号をコピー';},1800);
+      },select);
+    }catch(e){select();}
+  });
+})();
+</script>
+
+</html>
