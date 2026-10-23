@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Maru+Gothic:wght@500;700&display=swap">
 <style>
-/* Layout: 医院のチラシと同じオレンジ(見出し・ボタン)とグリーン(区切り線)で構成する1カラムの縦スクロール。診療時間と電話番号を最初の画面に置く。 */
+/* Layout: 医院のチラシと同じオレンジ(見出し・ボタン)とグリーン(区切り線)で構成する1カラムの縦スクロール。診療時間と電話番号を最初の画面に置く。臨時休診は closures.txt から読み込む。 */
 :root{
   --bg:#faf8f4;
   --surface:#ffffff;
@@ -66,6 +66,7 @@
 }
 
 *,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
 body{
   margin:0;
   background:var(--bg);
@@ -95,12 +96,27 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
 /* ヘッダー */
 .site-head{background:var(--surface);border-bottom:4px solid var(--accent)}
 .site-head .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem 1.5rem;padding-block:1rem}
-.brand{display:flex;flex-direction:column;text-decoration:none;color:var(--ink);min-width:0}
+.brand{display:flex;align-items:center;gap:.85rem;text-decoration:none;color:var(--ink);min-width:0}
+.brand-logo{display:block;height:48px;width:auto;border-radius:6px;flex:none}
+.brand-text{display:flex;flex-direction:column;min-width:0}
 .brand-en{font-size:.6875rem;letter-spacing:.22em;color:var(--accent);font-weight:700;line-height:1.5}
 .brand-name{font-family:var(--font-display);font-weight:700;font-size:1.55rem;line-height:1.35}
 .nav{display:flex;flex-wrap:wrap;gap:.25rem 1.1rem;font-size:.9375rem}
 .nav a{color:var(--ink);text-decoration:none;padding:.25rem 0;border-bottom:2px solid transparent}
 .nav a:hover{border-bottom-color:var(--accent)}
+
+/* 臨時休診(closures.txt から表示) */
+.closure-banner{background:var(--accent-soft);border-bottom:1px solid var(--line);padding-block:.9rem}
+.closure-banner .wrap{display:flex;flex-wrap:wrap;gap:.3rem 1.5rem;align-items:baseline}
+.closure-title{font-family:var(--font-display);font-weight:700;font-size:.9375rem;color:var(--ink)}
+.closure-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.15rem;min-width:0}
+.closure-list li{font-size:.9375rem;line-height:1.7}
+.closure-list .ctype{margin-left:.6em;font-weight:700;color:var(--off)}
+.closure-list .cnote{margin-left:.6em;color:var(--muted)}
+.closure-block{margin-top:2rem}
+.closure-block h3{font-size:1.15rem}
+.closure-block .closure-list{margin-top:.7rem}
+.closure-empty{margin-top:.7rem;font-size:.9375rem;color:var(--muted)}
 
 /* ヒーロー */
 .hero{padding-block:clamp(1.75rem,6vw,3.75rem)}
@@ -108,6 +124,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
 @media (min-width:820px){.hero .wrap{grid-template-columns:1.15fr .85fr;gap:3rem}}
 .eyebrow{font-size:.8125rem;letter-spacing:.1em;color:var(--accent);font-weight:700;margin-bottom:.75rem}
 .hero h1{font-size:clamp(1.6rem,4.6vw,2.4rem)}
+.nb{display:inline-block}
 .hero .lead{margin-top:1.1rem;color:var(--muted);max-width:34em}
 .actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.6rem}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;padding:.7em 1.3em;border-radius:8px;font:inherit;font-weight:700;font-size:.9375rem;text-decoration:none;border:1.5px solid var(--accent);cursor:pointer;line-height:1.5}
@@ -141,8 +158,11 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
 .about{display:grid;grid-template-columns:1fr;gap:2rem;margin-top:1.5rem;align-items:start}
 @media (min-width:820px){.about{grid-template-columns:1.2fr .8fr;gap:3rem}}
 .about-text{display:grid;gap:1rem;max-width:36em}
-.photos{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:1rem}
-.photo{width:100%;aspect-ratio:4/3;border:1.5px dashed var(--line);border-radius:10px;display:grid;place-items:center;text-align:center;font-size:.8125rem;color:var(--muted);padding:.75rem}
+.photos{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:0;min-width:0}
+.photos figure{margin:0;min-width:0}
+.photos figure.wide{grid-column:1 / -1}
+.photos img{display:block;width:100%;height:auto;border-radius:10px;background:var(--line)}
+.photos figcaption{margin-top:.35rem;font-size:.8125rem;color:var(--muted);line-height:1.6}
 
 /* 治療方針 */
 .motto{margin-top:1rem;font-family:var(--font-display);font-weight:700;font-size:clamp(1.1rem,2.8vw,1.4rem);line-height:1.6}
@@ -190,6 +210,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
 .btn-small{padding:.25em .9em;font-size:.8125rem}
 .map-box{background:var(--accent-soft);border-radius:14px;padding:1.5rem;display:flex;flex-direction:column;gap:.9rem;align-items:flex-start;min-width:0}
 .map-box p{font-size:.9375rem}
+.map-img{display:block;width:100%;max-width:385px;height:auto;border-radius:10px;border:1px solid var(--line)}
 
 /* フッター */
 .site-foot{border-top:1px solid var(--line);padding-block:1.75rem;font-size:.8125rem;color:var(--muted)}
@@ -205,8 +226,11 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
 <header class="site-head">
   <div class="wrap">
     <a class="brand" href="#top" id="top">
-      <span class="brand-en">UEOKA DENTAL CLINIC</span>
-      <span class="brand-name">うえおか歯科医院</span>
+      <img class="brand-logo" src="images/logo.png" width="35" height="48" alt="うえおか歯科医院のロゴ">
+      <span class="brand-text">
+        <span class="brand-en">UEOKA DENTAL CLINIC</span>
+        <span class="brand-name">うえおか歯科医院</span>
+      </span>
     </a>
     <nav class="nav" aria-label="ページ内メニュー">
       <a href="#about">当院の考え方</a>
@@ -218,12 +242,19 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
   </div>
 </header>
 
+<div class="closure-banner" id="closure-banner" hidden>
+  <div class="wrap">
+    <p class="closure-title">臨時休診のお知らせ</p>
+    <ul class="closure-list" id="closure-list-top"></ul>
+  </div>
+</div>
+
 <main>
   <section class="hero">
     <div class="wrap">
       <div>
         <p class="eyebrow">東大阪市 小若江 ・ 長瀬駅から徒歩5分</p>
-        <h1>痛くなる前に、悪くなる前に行く歯医者さん。</h1>
+        <h1><span class="nb">痛くなる前に、</span><span class="nb">悪くなる前に行く</span><span class="nb">歯医者さん。</span></h1>
         <p class="lead">出来れば一生、ご自分の歯で食事がしたい。そう願う方の歯の健康を、予防とていねいな治療で支えます。</p>
         <div class="actions">
           <a class="btn btn-primary" href="tel:0667238341">お電話で予約 <span class="num">06-6723-8341</span></a>
@@ -254,8 +285,18 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
           <p>「ヤダヤダ怖い」歯科から、むし歯や歯周病にならないための、気持ちのよい予防やケアを行う「ニコニコ明るく楽しい」歯科へ。愛される笑顔いっぱいの歯科医院を目指しています。</p>
         </div>
         <div class="photos">
-          <div class="photo">医院の外観写真<br>(差し替え予定)</div>
-          <div class="photo">院内の写真<br>(差し替え予定)</div>
+          <figure class="wide">
+            <img src="images/exterior.jpg" width="960" height="720" alt="うえおか歯科医院の外観。オレンジ色の看板と、木のルーバーのある入口。" loading="lazy">
+            <figcaption>医院の外観。オレンジの看板が目印です。</figcaption>
+          </figure>
+          <figure>
+            <img src="images/waiting.jpg" width="522" height="348" alt="受付と待合室。木目調の落ち着いた内装。" loading="lazy">
+            <figcaption>受付・待合室</figcaption>
+          </figure>
+          <figure>
+            <img src="images/treatment.jpg" width="528" height="342" alt="診療室。仕切りのある診療ユニットが並ぶ。" loading="lazy">
+            <figcaption>診療室</figcaption>
+          </figure>
         </div>
       </div>
     </div>
@@ -335,6 +376,12 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
       </div>
       <p class="hours-notes"><strong>休診日:水曜日・日曜日・祝祭日</strong><br><span class="ph">月曜の午後は、チラシに手書きの修正があるため確認中です。</span></p>
 
+      <div class="closure-block">
+        <h3>臨時休診のお知らせ</h3>
+        <ul class="closure-list" id="closure-list-hours"></ul>
+        <p class="closure-empty" id="closure-empty" hidden></p>
+      </div>
+
       <div class="reserve">
         <h3>ご予約について</h3>
         <ul>
@@ -364,6 +411,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
           </dd>
         </dl>
         <div class="map-box">
+          <img class="map-img" src="images/map.jpg" width="385" height="348" alt="医院周辺の地図。長瀬駅から近畿大学方面へ向かい、大学通り商店街の近くにあります。" loading="lazy">
           <p>Googleマップで、医院の場所と道順を確認できます。</p>
           <!-- 公開前に、医院のGoogleマップ(ビジネスプロフィール)のURLへ差し替える -->
           <a class="btn btn-primary" href="https://www.google.com/maps/search/?api=1&amp;query=うえおか歯科医院+東大阪市小若江4丁目11-26" target="_blank" rel="noopener">Googleマップで見る</a>
@@ -386,13 +434,72 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
   var AM=[540,720], PM=[960,1140];
   var DAYS={1:{am:1,pm:0},2:{am:1,pm:1},3:{am:0,pm:0},4:{am:1,pm:1},5:{am:1,pm:1},6:{am:1,pm:0},0:{am:0,pm:0}};
   var MAP={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6};
+  var WD=['日','月','火','水','木','金','土'];
 
   function fmt(m){return Math.floor(m/60)+':'+('0'+(m%60)).slice(-2);}
 
-  try{
-    var parts=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Tokyo',weekday:'short',hour:'numeric',minute:'numeric',hour12:false}).formatToParts(new Date());
+  /*PARSE_START*/
+  function pad(n){return ('0'+n).slice(-2);}
+  /* closures.txt を読み取る。1行1件「日付 区分 理由」。# で始まる行は無視 */
+  function parseClosures(text){
+    var out=[];
+    var D='(\\d{4})[-/.年](\\d{1,2})[-/.月](\\d{1,2})日?';
+    var re=new RegExp('^'+D+'(?:\\s*[~〜ー-]\\s*'+D+')?\\s*(.*)$');
+    String(text||'').split(/\r?\n/).forEach(function(raw){
+      var line=raw.normalize('NFKC').trim();
+      if(!line||line.charAt(0)==='#'){return;}
+      var m=line.match(re);
+      if(!m){return;}
+      var s=m[1]+'-'+pad(m[2])+'-'+pad(m[3]);
+      var e=m[4]?m[4]+'-'+pad(m[5])+'-'+pad(m[6]):s;
+      if(e<s){return;}
+      var rest=m[7]||'';
+      var kind='all', note=rest;
+      var k=rest.match(/^(終日|全日|午前|午後)(?:休診)?\s*(.*)$/);
+      if(k){kind=(k[1]==='午前')?'am':((k[1]==='午後')?'pm':'all');note=k[2];}
+      out.push({start:s,end:e,kind:kind,note:note});
+    });
+    out.sort(function(a,b){return a.start<b.start?-1:(a.start>b.start?1:0);});
+    return out;
+  }
+  /*PARSE_END*/
+
+  function md(s){
+    var p=s.split('-');
+    var dt=new Date(Date.UTC(+p[0],+p[1]-1,+p[2]));
+    return (+p[1])+'月'+(+p[2])+'日('+WD[dt.getUTCDay()]+')';
+  }
+
+  function fill(ul,items){
+    if(!ul){return;}
+    ul.textContent='';
+    items.forEach(function(c){
+      var li=document.createElement('li');
+      var date=document.createElement('strong');
+      date.textContent=(c.start===c.end)?md(c.start):md(c.start)+'〜'+md(c.end);
+      var type=document.createElement('span');
+      type.className='ctype';
+      type.textContent=(c.kind==='am')?'午前休診':((c.kind==='pm')?'午後休診':'休診');
+      li.appendChild(date);
+      li.appendChild(type);
+      if(c.note){
+        var note=document.createElement('span');
+        note.className='cnote';
+        note.textContent=c.note;
+        li.appendChild(note);
+      }
+      ul.appendChild(li);
+    });
+  }
+
+  function jstNow(){
+    var parts=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Tokyo',weekday:'short',year:'numeric',month:'2-digit',day:'2-digit',hour:'numeric',minute:'numeric',hour12:false}).formatToParts(new Date());
     var o={};
     parts.forEach(function(p){o[p.type]=p.value;});
+    return o;
+  }
+
+  function renderStatus(o,todays){
     var d=MAP[o.weekday];
     var m=(parseInt(o.hour,10)%24)*60+parseInt(o.minute,10);
     if(d===undefined||isNaN(m)){return;}
@@ -400,12 +507,29 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
     document.querySelectorAll('[data-d="'+d+'"]').forEach(function(el){el.classList.add('today');});
 
     var day=DAYS[d];
-    var sessions=[];
-    if(day.am){sessions.push(AM);}
-    if(day.pm){sessions.push(PM);}
+    var allClosed=false, amClosed=false, pmClosed=false, note='';
+    todays.forEach(function(c){
+      if(c.kind==='am'){amClosed=true;}
+      else if(c.kind==='pm'){pmClosed=true;}
+      else{allClosed=true;}
+      if(c.note&&!note){note=c.note;}
+    });
 
     var status=document.getElementById('status');
     var sub=document.getElementById('status-sub');
+
+    if(allClosed){
+      status.textContent='本日は臨時休診です';
+      status.setAttribute('data-state','off');
+      sub.textContent=note||'ご不便をおかけします。お急ぎの方はお電話ください。';
+      return;
+    }
+
+    var sessions=[];
+    if(day.am&&!amClosed){sessions.push(AM);}
+    if(day.pm&&!pmClosed){sessions.push(PM);}
+    var closedText=(amClosed&&day.am?'本日の午前は休診です。':'')+(pmClosed&&day.pm?'本日の午後は休診です。':'');
+
     var current=null,next=null;
     sessions.forEach(function(s){
       if(m>=s[0]&&m<s[1]){current=s;}
@@ -415,21 +539,100 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
     if(current){
       status.textContent='ただいま診療中';
       status.setAttribute('data-state','open');
-      sub.textContent='この時間帯の診療は '+fmt(current[1])+' までです。';
+      sub.textContent=closedText+'この時間帯の診療は '+fmt(current[1])+' までです。';
     }else if(next){
       status.textContent='本日の診療は '+fmt(next[0])+' から';
       status.setAttribute('data-state','soon');
-      sub.textContent='診療時間は '+fmt(next[0])+'〜'+fmt(next[1])+' です。';
+      sub.textContent=closedText+'診療時間は '+fmt(next[0])+'〜'+fmt(next[1])+' です。';
     }else if(sessions.length){
       status.textContent='本日の診療は終了しました';
       status.setAttribute('data-state','off');
-      sub.textContent='次回の診療時間は下の表をご確認ください。';
+      sub.textContent=closedText+'次回の診療時間は下の表をご確認ください。';
+    }else if(closedText){
+      status.textContent='本日は臨時休診です';
+      status.setAttribute('data-state','off');
+      sub.textContent=note||closedText;
     }else{
       status.textContent='本日は休診日です';
       status.setAttribute('data-state','off');
       sub.textContent='診療時間は下の表をご確認ください。';
     }
-  }catch(e){}
+  }
+
+  function apply(list,ok){
+    try{
+      var o=jstNow();
+      var today=o.year+'-'+o.month+'-'+o.day;
+      var upcoming=list.filter(function(c){return c.end>=today;});
+      var todays=upcoming.filter(function(c){return c.start<=today;});
+      renderStatus(o,todays);
+
+      var banner=document.getElementById('closure-banner');
+      if(upcoming.length){
+        fill(document.getElementById('closure-list-top'),upcoming.slice(0,5));
+        banner.hidden=false;
+      }
+      var empty=document.getElementById('closure-empty');
+      if(upcoming.length){
+        fill(document.getElementById('closure-list-hours'),upcoming.slice(0,10));
+        empty.hidden=true;
+      }else{
+        empty.textContent=ok?'現在、臨時休診の予定はありません。':'最新の休診情報は、お電話でご確認ください。';
+        empty.hidden=false;
+      }
+    }catch(e){}
+  }
+
+  /* 先生がスマホで更新する場合は、Googleスプレッドシートを「ウェブに公開」(CSV形式)したURLをここに貼る。
+     空のままなら closures.txt を読む。シートが読めないときも closures.txt に戻る */
+  var SHEET_CSV_URL='';
+
+  /*CSV_START*/
+  function fixDate(s){
+    var m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    return m?m[3]+'-'+m[1]+'-'+m[2]:s;
+  }
+  /* シートのCSV(開始日, 終了日, 区分, 理由)を、closures.txt と同じ1行形式に直す */
+  function csvToLines(csv){
+    var rows=[],row=[],f='',q=false,i,c;
+    csv=String(csv||'');
+    for(i=0;i<csv.length;i++){
+      c=csv.charAt(i);
+      if(q){
+        if(c==='"'){
+          if(csv.charAt(i+1)==='"'){f+='"';i++;}else{q=false;}
+        }else{f+=c;}
+      }else if(c==='"'){q=true;}
+      else if(c===','){row.push(f);f='';}
+      else if(c==='\n'||c==='\r'){
+        if(c==='\r'&&csv.charAt(i+1)==='\n'){i++;}
+        row.push(f);f='';rows.push(row);row=[];
+      }else{f+=c;}
+    }
+    row.push(f);rows.push(row);
+    return rows.map(function(r){
+      var a=fixDate((r[0]||'').trim()), b=fixDate((r[1]||'').trim());
+      if(!a){return '';}
+      return a+(b?'〜'+b:'')+' '+((r[2]||'').trim())+' '+((r[3]||'').trim());
+    }).join('\n');
+  }
+  /*CSV_END*/
+
+  function getText(url){
+    return fetch(url,{cache:'no-store'}).then(function(r){
+      if(!r.ok){throw new Error(r.status);}
+      return r.text();
+    });
+  }
+
+  function load(){
+    var fromTxt=function(){return getText('closures.txt').then(function(t){return parseClosures(t);});};
+    var p=SHEET_CSV_URL
+      ?getText(SHEET_CSV_URL).then(function(t){return parseClosures(csvToLines(t));}).catch(fromTxt)
+      :fromTxt();
+    p.then(function(list){apply(list,true);}).catch(function(){apply([],false);});
+  }
+  try{load();}catch(e){apply([],false);}
 
   /* 電話番号のコピー */
   var btn=document.getElementById('copy-tel');
