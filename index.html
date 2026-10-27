@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>うえおか歯科医院</title>
 <meta name="claude:viewport-fit-sides" content="cover">
+<link rel="icon" type="image/png" href="images/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Maru+Gothic:wght@500;700&display=swap">
@@ -161,6 +162,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
 .photos{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:0;min-width:0}
 .photos figure{margin:0;min-width:0}
 .photos figure.wide{grid-column:1 / -1}
+.photos figure:not(.wide) img{aspect-ratio:3/2;object-fit:cover}
 .photos img{display:block;width:100%;height:auto;border-radius:10px;background:var(--line)}
 .photos figcaption{margin-top:.35rem;font-size:.8125rem;color:var(--muted);line-height:1.6}
 
@@ -220,7 +222,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
 </style>
 
 <div class="notice">
-  <div class="wrap">これは仮のホームページです。<span class="ph">黄色の部分</span>は確認中、または写真などの差し替え待ちの内容です。</div>
+  <div class="wrap">これは仮のホームページです。<span class="ph">黄色の部分</span>は医院に確認中の内容です。</div>
 </div>
 
 <header class="site-head">
@@ -411,8 +413,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
           </dd>
         </dl>
         <div class="map-box">
-          <img class="map-img" src="images/map.jpg" width="385" height="348" alt="医院周辺の地図。長瀬駅から近畿大学方面へ向かい、大学通り商店街の近くにあります。" loading="lazy">
-          <p>Googleマップで、医院の場所と道順を確認できます。</p>
+          <img class="map-img" src="images/map.jpg" width="385" height="348" alt="医院周辺の地図。長瀬駅から近畿大学方面へ向かい、大学通り商店街の近くにあります。" loading="lazy">          <p>Googleマップで、医院の場所と道順を確認できます。</p>
           <!-- 公開前に、医院のGoogleマップ(ビジネスプロフィール)のURLへ差し替える -->
           <a class="btn btn-primary" href="https://www.google.com/maps/search/?api=1&amp;query=うえおか歯科医院+東大阪市小若江4丁目11-26" target="_blank" rel="noopener">Googleマップで見る</a>
         </div>
@@ -585,7 +586,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
 
   /* 先生がスマホで更新する場合は、Googleスプレッドシートを「ウェブに公開」(CSV形式)したURLをここに貼る。
      空のままなら closures.txt を読む。シートが読めないときも closures.txt に戻る */
-  var SHEET_CSV_URL='';
+  var SHEET_CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vQY9w0rS37JTLR_G0L86Gy4pvWTNl0P3XFKBUgOHnb5bkG5t3I5e8G8Tt8P3951Dp6lPRMkFZVy6xnQ/pub?gid=1779139756&single=true&output=csv';
 
   /*CSV_START*/
   function fixDate(s){
