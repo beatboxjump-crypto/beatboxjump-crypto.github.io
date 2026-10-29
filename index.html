@@ -77,7 +77,7 @@ body{
   line-height:1.9;
   -webkit-text-size-adjust:100%;
 }
-h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.5;margin:0;text-wrap:balance}
+h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.5;margin:0}
 p{margin:0}
 a{color:var(--accent)}
 a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
@@ -121,7 +121,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
 .hero .wrap{display:grid;grid-template-columns:1fr;gap:2rem;align-items:center}
 @media (min-width:820px){.hero .wrap{grid-template-columns:1.15fr .85fr;gap:3rem}}
 .eyebrow{font-size:.8125rem;letter-spacing:.1em;color:var(--accent);font-weight:700;margin-bottom:.75rem}
-.hero h1{font-size:clamp(1.5rem,4.2vw,2.2rem)}
+.hero h1{font-size:clamp(1.4rem,4vw,2.2rem);line-height:1.6}
 .nb{display:inline-block}
 .hero .lead{margin-top:1.1rem;color:var(--muted);max-width:34em}
 .actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.6rem}
@@ -249,7 +249,10 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
     <div class="wrap">
       <div>
         <p class="eyebrow">東大阪市 小若江 ・ 長瀬駅から徒歩5分</p>
-        <h1>「痛くない、丁寧な治療」で安心。<br>悪くなる前に行く、あなたのための歯医者さん。</h1>
+        <h1>
+          <span class="nb">「痛くない、丁寧な治療」</span><span class="nb">で安心。</span><br>
+          <span class="nb">悪くなる前に行く、</span><span class="nb">あなたのための</span><span class="nb">歯医者さん。</span>
+        </h1>
         <p class="lead">出来れば一生、ご自分の歯で食事がしたい。そう願う方の歯の健康を、予防とていねいな治療で支えます。</p>
         <div class="actions">
           <a class="btn btn-primary" href="tel:0667238341">お電話で予約 <span class="num">06-6723-8341</span></a>
@@ -373,7 +376,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
           </tbody>
         </table>
       </div>
-      <p class="hours-notes"><strong></strong></p>
+      <p class="hours-notes"><strong>休診日:水曜日・日曜日・祝祭日</strong></p>
 
       <div class="closure-block">
         <h3>臨時休診のお知らせ</h3>
