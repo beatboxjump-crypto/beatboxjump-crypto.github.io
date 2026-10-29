@@ -301,7 +301,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
     <div class="wrap">
       <h2>治療方針</h2>
       <p class="motto">「患者様へ常に最善の治療をご提供する」</p>
-      <p class="section-lead">このモットーのもと、次の4つの方針で診療しています。</p>
+      <p class="section-lead">このモットーのもと、次の5つの方針で診療しています。</p>
       <ol class="policy">
         <li>
           <h3>無痛治療</h3>
@@ -318,6 +318,10 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
         <li>
           <h3>安心できる治療</h3>
           <p>一人ひとりの患者様に、丁寧な治療を行います。お口の状態をわかりやすくお知らせし、ご希望をうかがいながら進めます。これから行う治療や、その日に行った治療について、わからない点は遠慮なくご質問ください。</p>
+        </li>
+        <li>
+          <h3>オーダーメイドの歯のクリーニング</h3>
+          <p>当院では、すべての患者様に質の高いケアをお届けするため、お一人あたり45分〜60分の十分な時間を確保しております。お口の状態に合わせた最適なアプローチに加え、最新の「パウダーフロー」を導入。微細なパウダーと水の水流により、歯や歯ぐきを傷つけることなく、従来の器具では届きにくかった隙間のバイオフィルム（細菌の膜）や頑固なタバコのヤニ、着色汚れ（ステイン）まで優しくきれいに洗い流します。</p>
         </li>
       </ol>
       <p class="signature">うえおか歯科医院 院長 上岡 徹雄</p>
@@ -369,7 +373,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
           </tbody>
         </table>
       </div>
-      <p class="hours-notes"><strong>休診日:水曜日・日曜日・祝祭日・月曜日午後</strong></p>
+      <p class="hours-notes"><strong>休診日:水曜日・日曜日・祝祭日</strong></p>
 
       <div class="closure-block">
         <h3>臨時休診のお知らせ</h3>
@@ -572,7 +576,7 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-off
         fill(document.getElementById('closure-list-hours'),upcoming.slice(0,10));
         empty.hidden=true;
       }else{
-        empty.textContent=ok?'現在、臨時休診の予定はありません。':'最新の休診情報は、お電話でご確認ください。';
+        empty.textContent=ok?'現在,臨時休診の予定はありません。':'最新の休診情報は、お電話でご確認ください。';
         empty.hidden=false;
       }
     }catch(e){}
